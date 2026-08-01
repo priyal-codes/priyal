@@ -20,7 +20,7 @@ export const ContactSection = () => {
             Contact & Connect
           </h2>
           <p className="font-mono text-xs sm:text-sm text-retro-pink font-medium tracking-wider mt-1.5">
-            Let&apos;s Build Something Together
+            Open to Work &amp; Opportunities
           </p>
         </motion.div>
 
@@ -40,10 +40,13 @@ export const ContactSection = () => {
               </div>
               <div className="p-6 sm:p-8 space-y-4">
                 <p className="text-sm sm:text-base text-gray-200 leading-relaxed font-sans font-medium">
-                  I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+                  I&apos;m actively seeking new job opportunities as a Full Stack Developer. Whether it&apos;s a full-time role, internship, or freelance project — I&apos;d love to connect!
                 </p>
-                <p className="font-pixel text-xs sm:text-sm text-retro-pink leading-relaxed">
-                  Ready to team up? Let&apos;s build something amazing together!
+                <p className="font-pixel text-xs sm:text-sm text-retro-yellow leading-relaxed">
+                  ▶ OPEN TO WORK — Available immediately
+                </p>
+                <p className="font-pixel text-xs text-retro-pink leading-relaxed">
+                  Ready to contribute, collaborate, and build something amazing together.
                 </p>
               </div>
             </div>
