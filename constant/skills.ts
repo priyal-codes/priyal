@@ -15,6 +15,7 @@ import {
 
 import {
   SiExpress,
+  SiLaragon,
   SiMongodb,
   SiMysql,
   SiNextdotjs,
@@ -82,6 +83,7 @@ export const skillsData: SkillsCategory[] = [
       { title: "VS Code", subtitle: "Code Editor", logoComponent: TbBrandVscode, color: "#007ACC" },
       { title: "Postman", subtitle: "API Development Tool", logoComponent: SiPostman, color: "#FF6C37" },
       { title: "XAMPP", subtitle: "Local Server Stack", logoComponent: SiXampp, color: "#FB7A24" },
+      { title: "Laragon", subtitle: "Local Development Environment", logoComponent: SiLaragon, color: "#40AEF0" },
     ],
   },
 ];
