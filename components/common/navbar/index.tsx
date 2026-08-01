@@ -45,6 +45,7 @@ export const Navbar = () => {
             </span>
           </Link>
 
+          {/* RESUME BUTTON — temporarily hidden, re-enable when resume is ready
           <a
             href="/docs/priyal_ramteke_resume.pdf"
             target="_blank"
@@ -54,6 +55,7 @@ export const Navbar = () => {
             <span>RESUME</span>
             <span className="text-sm">⤓</span>
           </a>
+          */}
         </div>
       </div>
     </motion.nav>
