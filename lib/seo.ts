@@ -40,6 +40,11 @@ export function constructMetadata({
     creator: SITE_SEO.creator,
     publisher: SITE_SEO.publisher,
     metadataBase: new URL(SITE_SEO.siteUrl),
+    icons: {
+      icon: "/icon.png",
+      shortcut: "/icon.png",
+      apple: "/icon.png",
+    },
     alternates: {
       canonical: canonicalUrl,
     },
