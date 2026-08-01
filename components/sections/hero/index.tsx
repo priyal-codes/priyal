@@ -93,19 +93,18 @@ export const HeroSection = () => {
                   initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-pixel text-white text-3xl sm:text-5xl lg:text-6xl tracking-wider leading-relaxed"
+                  className="font-pixel text-white text-3xl sm:text-4xl lg:text-5xl tracking-wider leading-relaxed"
                 >
-                  {profile.name.first.toUpperCase()}
+                  {profile.name.full.toUpperCase()}
                 </motion.h1>
 
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6 }}
-                  className="font-pixel text-xs sm:text-sm text-retro-pink tracking-widest flex flex-wrap items-center justify-center lg:justify-start gap-2"
+                  className="font-pixel text-xs sm:text-sm tracking-widest flex items-center justify-center lg:justify-start gap-2 whitespace-nowrap"
                 >
-                  <span>{profile.name.full.toUpperCase()}</span>
-                  <span>—</span>
+                  <span className="text-retro-yellow">●</span>
                   <RotatingRoles />
                 </motion.div>
 
@@ -270,7 +269,7 @@ function RotatingRoles() {
   }, []);
 
   return (
-    <div className="relative inline-block min-w-[210px] text-left">
+    <div className="relative inline-block text-left">
       <AnimatePresence mode="wait">
         <motion.span
           key={ROLES[index]}
@@ -278,7 +277,7 @@ function RotatingRoles() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.3 }}
-          className="text-retro-green font-bold inline-block"
+          className="text-retro-pink font-bold inline-block"
         >
           {ROLES[index]}
         </motion.span>
