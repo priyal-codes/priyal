@@ -31,5 +31,17 @@ export const socials = [
     handle: "priyal-ramteke",
     url: "https://www.linkedin.com/in/priyal-ramteke-38aa8126a/",
     icon: FaLinkedin,
-  }, 
+  },
+  {
+    name: "Instagram",
+    handle: "pxriyal",
+    url: "https://www.instagram.com/pxriyal/",
+    icon: FaInstagram,
+  },
+  {
+    name: "X",
+    handle: "Priyalcodes",
+    url: "https://x.com/Priyalcodes",
+    icon: FaXTwitter,
+  },
 ] satisfies Social[];
