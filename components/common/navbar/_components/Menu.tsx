@@ -46,12 +46,17 @@ export const Menu = () => {
     e.preventDefault();
     setOpen(false);
 
-    let targetId = link.replace("/#", "");
-    if (targetId === "hero") targetId = "home";
+    const targetId = link.replace("/#", "");
 
     if (pathname === "/") {
-      window.location.hash = `#${targetId}`;
-      window.dispatchEvent(new HashChangeEvent("hashchange"));
+      const element = document.getElementById(targetId);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      } else {
+        window.history.pushState(null, "", `#${targetId}`);
+      }
     } else {
       router.push(`/#${targetId}`);
     }
