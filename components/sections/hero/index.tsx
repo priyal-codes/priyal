@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { useRef, useState, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { profile } from "@/constant";
 import { useConsole } from "@/components/common/console-layout";
 
@@ -75,9 +75,10 @@ export const HeroSection = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="font-pixel text-retro-yellow text-sm sm:text-base tracking-widest"
+                className="font-pixel text-retro-yellow text-xs sm:text-sm tracking-widest uppercase flex items-center justify-center gap-2"
               >
-                WELCOME TO MY PORTFOLIO
+                <span className="inline-block w-2 h-2 rounded-full bg-retro-green animate-pulse" />
+                SYSTEM ONLINE — DEVELOPER CONSOLE
               </motion.span>
 
               <motion.h1
@@ -109,15 +110,17 @@ export const HeroSection = () => {
             </div>
           </div>
 
-          {/* Name & Title below */}
-          <motion.p
+          {/* Dynamic Rotating Name & Role below */}
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.0 }}
-            className="font-pixel text-xs sm:text-sm text-retro-pink mt-6 tracking-widest text-center"
+            className="font-pixel text-xs sm:text-sm text-retro-pink mt-6 tracking-widest text-center flex items-center justify-center gap-2"
           >
-            {profile.name.full.toUpperCase()} — {profile.work.title.toUpperCase()}
-          </motion.p>
+            <span>{profile.name.full.toUpperCase()}</span>
+            <span>—</span>
+            <RotatingRoles />
+          </motion.div>
         </motion.div>
 
         {/* ── Retro Pixel Ground with Traveling Pac-Man & Ghosts ── */}
@@ -217,6 +220,41 @@ function PixelGhost({ color }: { color: string }) {
       <rect x="4" y="5" width="2" height="2" fill="#0000FF" />
       <rect x="10" y="5" width="2" height="2" fill="#0000FF" />
     </svg>
+  );
+}
+
+const ROLES = [
+  "FULL STACK DEVELOPER",
+  "MERN STACK ENGINEER",
+  "WEB APPLICATION DEVELOPER",
+  "SOFTWARE ENGINEER",
+];
+
+function RotatingRoles() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % ROLES.length);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="relative inline-block min-w-[210px] text-left">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={ROLES[index]}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.3 }}
+          className="text-retro-green font-bold inline-block"
+        >
+          {ROLES[index]}
+        </motion.span>
+      </AnimatePresence>
+    </div>
   );
 }
 

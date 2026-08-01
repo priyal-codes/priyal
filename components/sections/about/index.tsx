@@ -119,9 +119,7 @@ export const AboutSection = () => {
                     transition={{ duration: 0.25 }}
                     className="space-y-4 text-center py-4"
                   >
-                    <span className="font-mono font-bold text-xs sm:text-sm text-retro-green tracking-wider block">
-                      DEVELOPER MOTTO
-                    </span>
+                    
                     <p className="font-mono text-sm sm:text-base text-retro-green leading-relaxed italic font-medium">
                       &ldquo;{profile.quote}&rdquo;
                     </p>
