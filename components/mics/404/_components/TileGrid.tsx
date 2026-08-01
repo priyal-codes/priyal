@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { motion } from "motion/react";
-import { FaRotateRight } from "react-icons/fa6";
+import { FaRotateRight, FaPlay } from "react-icons/fa6";
 import { CardTile, ActiveTileMapping } from "../types";
 import { DIGIT_4, DIGIT_0 } from "../constants";
 import { TileCard } from "./TileCard";
@@ -11,16 +11,22 @@ interface TileGridProps {
   tiles: CardTile[];
   flippedIndices: number[];
   matchedIndices: Set<number>;
+  isGameActive: boolean;
+  isCompleted: boolean;
   onTileClick: (index: number) => void;
   onReset: () => void;
+  onStart: () => void;
 }
 
 export const TileGrid: React.FC<TileGridProps> = ({
   tiles,
   flippedIndices,
   matchedIndices,
+  isGameActive,
+  isCompleted,
   onTileClick,
   onReset,
+  onStart,
 }) => {
   // Map indices to 404 digit matrices
   const activeTileMap = useMemo(() => {
@@ -45,6 +51,8 @@ export const TileGrid: React.FC<TileGridProps> = ({
     return map;
   }, []);
 
+  const showStartOverlay = !isGameActive && !isCompleted;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -52,6 +60,20 @@ export const TileGrid: React.FC<TileGridProps> = ({
       transition={{ duration: 0.5, delay: 0.1 }}
       className="relative bg-neutral-950/80 border border-white/10 rounded-3xl p-4 xs:p-6 sm:p-8 my-4"
     >
+      {/* Start overlay — shown before game begins */}
+      {showStartOverlay && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-3xl bg-neutral-950/90 backdrop-blur-sm gap-4">
+          <p className="text-sm text-muted-foreground">Match all icon pairs to win</p>
+          <button
+            onClick={onStart}
+            className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-bold text-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            <FaPlay className="size-3.5" />
+            <span>Start Game</span>
+          </button>
+        </div>
+      )}
+
       {/* 404 Grid Layout: 3 Digit Blocks side by side */}
       <div className="flex items-center justify-center gap-2 xs:gap-3 sm:gap-6 md:gap-8 select-none">
         {[DIGIT_4, DIGIT_0, DIGIT_4].map((digitMatrix, digitIdx) => (
@@ -98,16 +120,18 @@ export const TileGrid: React.FC<TileGridProps> = ({
         ))}
       </div>
 
-      {/* Quick Reset Game Controls */}
-      <div className="mt-6 flex items-center justify-center gap-3">
-        <button
-          onClick={onReset}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-muted-foreground hover:text-foreground transition-all cursor-pointer"
-        >
-          <FaRotateRight className="size-3" />
-          <span>Shuffle & Reset</span>
-        </button>
-      </div>
+      {/* Reset button — only shown while game is active or completed */}
+      {(isGameActive || isCompleted) && (
+        <div className="mt-6 flex items-center justify-center gap-3">
+          <button
+            onClick={onReset}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+          >
+            <FaRotateRight className="size-3" />
+            <span>Shuffle & Reset</span>
+          </button>
+        </div>
+      )}
     </motion.div>
   );
 };

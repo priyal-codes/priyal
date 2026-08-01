@@ -92,7 +92,7 @@ export function PacManGame() {
     }));
 
     stateRef.current = {
-      pacman: { x: 14 * CELL, y: 23 * CELL, dir: 0, nextDir: 0, mouthOpen: 0, mouthDir: 1 },
+      pacman: { x: 13.5 * CELL, y: 26.5 * CELL, dir: 2, nextDir: 2, mouthOpen: 0, mouthDir: 1 },
       ghosts,
       dots,
       score: 0,
@@ -137,17 +137,31 @@ export function PacManGame() {
 
     initGame();
 
+    const changeDir = (dir: number) => {
+      const s = stateRef.current;
+      if (s.gameOver) {
+        initGame();
+        return;
+      }
+      s.pacman.nextDir = dir;
+    };
+
     const handleKeyDown = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
+      if (["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d"].includes(key)) {
+        e.preventDefault();
+      }
+
       keysRef.current.add(e.key);
       const s = stateRef.current;
       if (s.gameOver) {
         initGame();
         return;
       }
-      if (e.key === "ArrowRight" || e.key === "d") s.pacman.nextDir = 0;
-      else if (e.key === "ArrowDown" || e.key === "s") s.pacman.nextDir = 1;
-      else if (e.key === "ArrowLeft" || e.key === "a") s.pacman.nextDir = 2;
-      else if (e.key === "ArrowUp" || e.key === "w") s.pacman.nextDir = 3;
+      if (e.key === "ArrowRight" || key === "d") s.pacman.nextDir = 0;
+      else if (e.key === "ArrowDown" || key === "s") s.pacman.nextDir = 1;
+      else if (e.key === "ArrowLeft" || key === "a") s.pacman.nextDir = 2;
+      else if (e.key === "ArrowUp" || key === "w") s.pacman.nextDir = 3;
     };
     const handleKeyUp = (e: KeyboardEvent) => keysRef.current.delete(e.key);
 
@@ -400,10 +414,20 @@ export function PacManGame() {
     };
   }, [initGame]);
 
+  const handleDirection = (dir: number) => {
+    const s = stateRef.current;
+    if (s.gameOver) {
+      initGame();
+      return;
+    }
+    s.pacman.nextDir = dir;
+  };
+
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-auto max-h-[360px] sm:max-h-[400px] object-contain rounded bg-black/90 border border-retro-yellow/30 shadow-inner"
+      className="w-full h-auto max-h-[380px] object-contain rounded bg-black/90 border border-retro-yellow/30 shadow-inner focus:outline-none"
+      tabIndex={0}
       style={{
         imageRendering: "pixelated",
       }}

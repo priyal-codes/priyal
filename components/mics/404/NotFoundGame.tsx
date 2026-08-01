@@ -1,9 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { motion } from "motion/react";
-import { FaHouse } from "react-icons/fa6";
 import { CardTile } from "./types";
 import { ICON_POOL } from "./constants";
 import { GoBackButton } from "./_components/GoBackButton";
@@ -11,11 +8,14 @@ import { GameHeader } from "./_components/GameHeader";
 import { GameStats } from "./_components/GameStats";
 import { TileGrid } from "./_components/TileGrid";
 import { VictoryModal } from "./_components/VictoryModal";
+import { PacManGame } from "./_components/PacManGame";
+
+type ActiveGame = "memory" | "pacman";
 
 export const NotFoundGame: React.FC = () => {
-  const router = useRouter();
+  const [activeGame, setActiveGame] = useState<ActiveGame>("memory");
 
-  // Game state
+  // ── Memory match state ──────────────────────────────────────────────────────
   const [tiles, setTiles] = useState<CardTile[]>([]);
   const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
   const [matchedIndices, setMatchedIndices] = useState<Set<number>>(new Set());
@@ -25,28 +25,16 @@ export const NotFoundGame: React.FC = () => {
   const [isGameActive, setIsGameActive] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
 
-  // Initialize or reset game
   const initializeGame = useCallback(() => {
     const cards: CardTile[] = [];
     ICON_POOL.forEach((iconData) => {
-      cards.push({
-        instanceId: `${iconData.id}-1-${Math.random()}`,
-        pairId: iconData.id,
-        iconData,
-      });
-      cards.push({
-        instanceId: `${iconData.id}-2-${Math.random()}`,
-        pairId: iconData.id,
-        iconData,
-      });
+      cards.push({ instanceId: `${iconData.id}-1-${Math.random()}`, pairId: iconData.id, iconData });
+      cards.push({ instanceId: `${iconData.id}-2-${Math.random()}`, pairId: iconData.id, iconData });
     });
-
-    // Fisher-Yates shuffle
     for (let i = cards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [cards[i], cards[j]] = [cards[j], cards[i]];
     }
-
     setTiles(cards);
     setFlippedIndices([]);
     setMatchedIndices(new Set());
@@ -57,116 +45,99 @@ export const NotFoundGame: React.FC = () => {
     setIsCompleted(false);
   }, []);
 
-  useEffect(() => {
-    initializeGame();
-  }, [initializeGame]);
+  useEffect(() => { initializeGame(); }, [initializeGame]);
 
-  // Timer effect
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
     if (isGameActive && !isCompleted) {
-      interval = setInterval(() => {
-        setTimeSeconds((prev) => prev + 1);
-      }, 1000);
+      interval = setInterval(() => setTimeSeconds((p) => p + 1), 1000);
     }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
+    return () => { if (interval) clearInterval(interval); };
   }, [isGameActive, isCompleted]);
 
-  // Tile click handler
+  const handleStart = () => setIsGameActive(true);
+
   const handleTileClick = (index: number) => {
-    if (isChecking || isCompleted) return;
+    if (!isGameActive || isChecking || isCompleted) return;
     if (matchedIndices.has(index) || flippedIndices.includes(index)) return;
-
-    if (!isGameActive) {
-      setIsGameActive(true);
-    }
-
     if (flippedIndices.length === 0) {
       setFlippedIndices([index]);
     } else if (flippedIndices.length === 1) {
-      const firstIndex = flippedIndices[0];
-      const secondIndex = index;
-      setFlippedIndices([firstIndex, secondIndex]);
-      setMoves((prev) => prev + 1);
+      const first = flippedIndices[0];
+      setFlippedIndices([first, index]);
+      setMoves((p) => p + 1);
       setIsChecking(true);
-
-      const firstCard = tiles[firstIndex];
-      const secondCard = tiles[secondIndex];
-
-      if (firstCard.pairId === secondCard.pairId) {
-        // Match found!
+      if (tiles[first].pairId === tiles[index].pairId) {
         setTimeout(() => {
           setMatchedIndices((prev) => {
             const next = new Set(prev);
-            next.add(firstIndex);
-            next.add(secondIndex);
-            if (next.size === 20) {
-              setIsCompleted(true);
-              setIsGameActive(false);
-            }
+            next.add(first); next.add(index);
+            if (next.size === 20) { setIsCompleted(true); setIsGameActive(false); }
             return next;
           });
-          setFlippedIndices([]);
-          setIsChecking(false);
+          setFlippedIndices([]); setIsChecking(false);
         }, 350);
       } else {
-        // No match: flip back after delay
-        setTimeout(() => {
-          setFlippedIndices([]);
-          setIsChecking(false);
-        }, 800);
+        setTimeout(() => { setFlippedIndices([]); setIsChecking(false); }, 800);
       }
     }
   };
 
   return (
     <div className="min-h-screen w-full bg-background text-foreground flex flex-col items-center justify-center relative overflow-x-hidden p-4 sm:p-6 md:p-8">
-      {/* Top Left Go Back Button */}
       <GoBackButton />
 
-      {/* Top Right Stats Bar */}
-      <GameStats
-        moves={moves}
-        timeSeconds={timeSeconds}
-        matchedPairsCount={matchedIndices.size / 2}
-      />
+      {/* Stats bar only for memory match */}
+      {activeGame === "memory" && (
+        <GameStats moves={moves} timeSeconds={timeSeconds} matchedPairsCount={matchedIndices.size / 2} />
+      )}
 
-      {/* Main Content Area */}
       <main className="flex flex-col items-center justify-center text-center my-auto py-12 max-w-4xl w-full">
-        {/* Header Text */}
         <GameHeader />
 
-        {/* 404 Tile Grid Mini Game Container */}
-        <TileGrid
-          tiles={tiles}
-          flippedIndices={flippedIndices}
-          matchedIndices={matchedIndices}
-          onTileClick={handleTileClick}
-          onReset={initializeGame}
-        />
-
-        {/* Bottom Home Page Button (matching screenshot style) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-6"
-        >
+        {/* ── Game selector tabs ── */}
+        <div className="flex items-center gap-2 mb-4">
           <button
-            onClick={() => router.push("/")}
-            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-bold text-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            onClick={() => setActiveGame("memory")}
+            className={`px-5 py-2 rounded-full text-xs font-semibold transition-all border ${
+              activeGame === "memory"
+                ? "bg-emerald-500 border-emerald-500 text-neutral-950"
+                : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+            }`}
           >
-            <span>Home page</span>
-            <FaHouse className="size-3.5" />
+            🃏 Memory Match
           </button>
-        </motion.div>
+          <button
+            onClick={() => setActiveGame("pacman")}
+            className={`px-5 py-2 rounded-full text-xs font-semibold transition-all border ${
+              activeGame === "pacman"
+                ? "bg-yellow-400 border-yellow-400 text-neutral-950"
+                : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+            }`}
+          >
+            👾 Pac-Man
+          </button>
+        </div>
+
+        {/* ── Active game ── */}
+        {activeGame === "memory" ? (
+          <TileGrid
+            tiles={tiles}
+            flippedIndices={flippedIndices}
+            matchedIndices={matchedIndices}
+            isGameActive={isGameActive}
+            isCompleted={isCompleted}
+            onTileClick={handleTileClick}
+            onReset={initializeGame}
+            onStart={handleStart}
+          />
+        ) : (
+          <PacManGame />
+        )}
       </main>
 
-      {/* VICTORY MODAL & TROPHY DOWNLOAD DIALOG */}
       <VictoryModal
-        isOpen={isCompleted}
+        isOpen={isCompleted && activeGame === "memory"}
         moves={moves}
         timeSeconds={timeSeconds}
         onPlayAgain={initializeGame}
