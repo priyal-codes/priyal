@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
-import { Menu } from "./_components/Menu";
 import { profile } from "@/constant";
 
 export const Navbar = () => {
@@ -46,9 +45,15 @@ export const Navbar = () => {
             </span>
           </Link>
 
-          <div>
-            <Menu />
-          </div>
+          <a
+            href="/docs/priyal_ramteke_resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="retro-btn border-retro-yellow text-retro-yellow bg-retro-yellow/10 hover:bg-retro-yellow/20 text-xs px-4 py-2 font-bold flex items-center gap-1.5"
+          >
+            <span>RESUME</span>
+            <span className="text-sm">⤓</span>
+          </a>
         </div>
       </div>
     </motion.nav>
