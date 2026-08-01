@@ -172,7 +172,7 @@ export const AboutSection = () => {
                 quality={100}
                 sizes="(max-width: 768px) 100vw, 33vw"
                 style={{ objectPosition: "center 82%" }}
-                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                className="object-cover grayscale-0 sm:grayscale group-hover:grayscale-0 transition-all duration-500"
               />
             </div>
           </motion.div>
