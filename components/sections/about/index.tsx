@@ -9,8 +9,8 @@ export const AboutSection = () => {
   const [activeTab, setActiveTab] = useState<"brief" | "edu" | "quote">("brief");
 
   const tabs = [
-    { id: "brief", label: "01 BRIEF" },
-    { id: "edu", label: "02 EDU" },
+    { id: "brief", label: "01 OVERVIEW" },
+    { id: "edu", label: "02 EDUCATION" },
     { id: "quote", label: "03 QUOTE" },
   ] as const;
 
@@ -45,10 +45,12 @@ export const AboutSection = () => {
           >
             {/* Top Indicator */}
             <div className="flex items-center justify-between border-b border-retro-yellow/20 pb-4 mb-6">
-              <span className="font-pixel text-xs text-retro-cyan tracking-widest">
-                // DEVELOPER PROFILE
+              <span className="font-mono font-bold text-xs sm:text-sm text-retro-cyan tracking-wider">
+                {activeTab === "brief" && "// DEVELOPER PROFILE"}
+                {activeTab === "edu" && "// ACADEMIC BACKGROUND"}
+                {activeTab === "quote" && "// DEVELOPER MOTTO"}
               </span>
-              <span className="font-pixel text-xs text-muted-foreground">
+              <span className="font-mono font-semibold text-xs text-muted-foreground">
                 {activeTab === "brief" && "01 / 03"}
                 {activeTab === "edu" && "02 / 03"}
                 {activeTab === "quote" && "03 / 03"}
@@ -67,16 +69,16 @@ export const AboutSection = () => {
                     transition={{ duration: 0.25 }}
                     className="space-y-4"
                   >
-                    <h3 className="font-pixel text-base text-retro-yellow">
+                    <h3 className="font-heading font-extrabold text-lg sm:text-xl text-retro-yellow tracking-wide">
                       {profile.name.full}
                     </h3>
-                    <p className="font-pixel text-xs text-retro-green">
+                    <p className="font-mono text-xs sm:text-sm text-retro-green font-semibold">
                       {profile.work.title} — {profile.curr_location.city}, {profile.curr_location.state}
                     </p>
                     <div className="space-y-3 pt-2">
                       {profile.about.slice(0, 3).map((text, i) => (
                         <p key={i} className="text-sm sm:text-base text-gray-200 leading-relaxed font-sans font-medium flex items-start gap-2.5">
-                          <span className="font-pixel text-xs text-retro-yellow mt-1 shrink-0">▸</span>
+                          <span className="font-mono text-xs text-retro-yellow mt-1 shrink-0">▸</span>
                           <span>{text}</span>
                         </p>
                       ))}
@@ -93,16 +95,16 @@ export const AboutSection = () => {
                     transition={{ duration: 0.25 }}
                     className="space-y-4"
                   >
-                    <span className="font-pixel text-xs text-retro-pink tracking-wider block">
+                    <span className="font-mono font-bold text-xs sm:text-sm text-retro-pink tracking-wider block">
                       EDUCATION & ACADEMICS
                     </span>
-                    <h3 className="font-pixel text-sm sm:text-base text-white">
+                    <h3 className="font-heading font-extrabold text-base sm:text-lg text-white">
                       {profile.education.uni}
                     </h3>
-                    <p className="font-pixel text-xs text-retro-yellow">
+                    <p className="font-mono text-xs sm:text-sm text-retro-yellow font-medium">
                       {profile.education.degree} in {profile.education.major}
                     </p>
-                    <p className="font-pixel text-xs text-muted-foreground">
+                    <p className="font-mono text-xs sm:text-sm text-muted-foreground font-medium">
                       Batch: {profile.education.batch} — {profile.education.location.city}, {profile.education.location.state}
                     </p>
                   </motion.div>
@@ -117,10 +119,10 @@ export const AboutSection = () => {
                     transition={{ duration: 0.25 }}
                     className="space-y-4 text-center py-4"
                   >
-                    <span className="font-pixel text-xs text-retro-green tracking-wider block">
+                    <span className="font-mono font-bold text-xs sm:text-sm text-retro-green tracking-wider block">
                       DEVELOPER MOTTO
                     </span>
-                    <p className="font-pixel text-sm sm:text-base text-retro-green leading-relaxed italic">
+                    <p className="font-mono text-sm sm:text-base text-retro-green leading-relaxed italic font-medium">
                       &ldquo;{profile.quote}&rdquo;
                     </p>
                   </motion.div>
@@ -136,9 +138,9 @@ export const AboutSection = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`font-pixel text-xs px-3.5 py-2 border transition-all ${
+                    className={`font-mono text-xs sm:text-sm font-bold px-4 py-2 border transition-all ${
                       isActive
-                        ? "border-retro-cyan text-retro-cyan bg-retro-cyan/15 font-bold shadow-[0_0_12px_rgba(0,255,255,0.3)]"
+                        ? "border-retro-cyan text-retro-cyan bg-retro-cyan/15 shadow-[0_0_12px_rgba(0,255,255,0.3)]"
                         : "border-white/20 text-white/60 hover:text-white hover:border-white/40"
                     }`}
                   >
