@@ -29,7 +29,7 @@ export const socials = [
   {
     name: "LinkedIn",
     handle: "priyal",
-    url: "https://linkedin.com/in/priyal",
+    url: "https://www.linkedin.com/in/priyal-ramteke-38aa8126a/",
     icon: FaLinkedin,
-  },
+  }, 
 ] satisfies Social[];

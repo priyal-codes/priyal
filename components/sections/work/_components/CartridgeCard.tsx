@@ -69,7 +69,7 @@ export function CartridgeCard({ project, index }: CartridgeCardProps) {
           <div className="w-8 h-1.5 bg-[#3a3f4d] rounded-sm" />
         </div>
         <span className="font-pixel text-[8px] sm:text-[9px] text-gray-400 tracking-widest">
-          CARTRIDGE #{String(index + 1).padStart(2, "0")}
+          PROJECT #{String(index + 1).padStart(2, "0")}
         </span>
       </div>
 
@@ -113,7 +113,7 @@ export function CartridgeCard({ project, index }: CartridgeCardProps) {
               target="_blank"
               className={`retro-btn ${theme.btnText} text-xs px-4 py-2 font-bold flex items-center gap-1.5`}
             >
-              ▶ PLAY DEMO
+              ▶ LIVE DEMO
             </Link>
           )}
           {project.links.github && (

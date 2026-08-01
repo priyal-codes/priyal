@@ -21,9 +21,7 @@ export const WorkSection = () => {
           <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-retro-green uppercase tracking-wide">
             Featured Projects
           </h2>
-          <p className="font-mono text-xs sm:text-sm text-retro-pink font-medium tracking-wider mt-1.5">
-            Game Cartridges — Select to Play
-          </p>
+         
         </motion.div>
 
         {/* Nintendo Game Cartridges Grid */}

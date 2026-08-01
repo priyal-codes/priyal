@@ -48,9 +48,11 @@ export const experience: Experience[] = [
       "Next.js",
       "Node.js",
       "Express.js",
+      "PHP",
       "MongoDB",
       "REST APIs",
       "JavaScript",
+      "Laragon",
     ],
   },
   {

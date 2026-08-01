@@ -18,9 +18,7 @@ export const ExperienceSection = () => {
           <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-retro-green uppercase tracking-wide">
             Work Experience
           </h2>
-          <p className="font-mono text-xs sm:text-sm text-retro-pink font-medium tracking-wider mt-1.5">
-            Work History & Engineering Roles
-          </p>
+        
         </motion.div>
 
         {/* Experience Cards */}

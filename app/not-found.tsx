@@ -3,7 +3,7 @@ import { NotFoundGame } from "@/components/mics/404";
 
 export const metadata: Metadata = {
   title: "404 - Page Not Found",
-  description: "Play the 404 tile matching mini game to win your custom victory trophy!",
+  description: "The page you are looking for does not exist. Navigate back to explore the portfolio.",
 };
 
 export default function NotFound() {
