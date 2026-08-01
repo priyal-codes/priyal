@@ -88,9 +88,9 @@ export function ConsoleLayout() {
     <ConsoleContext.Provider value={{ activeTab, setActiveTab: handleTabClick }}>
       <div className="min-h-screen flex flex-col relative">
         {/* ── Tab Bar ── */}
-        <div className="sticky top-[52px] sm:top-[56px] z-40 bg-black/95 backdrop-blur-md border-b-2 border-retro-green/30">
-          <div className="max-w-7xl mx-auto px-2 sm:px-4">
-            <div className="flex items-center justify-center overflow-x-auto scrollbar-hide gap-1 sm:gap-3 py-1.5">
+        <div className="sticky top-[48px] sm:top-[52px] z-40 bg-black/95 backdrop-blur-md border-b-2 border-retro-green/30">
+          <div className="max-w-7xl mx-auto px-1 sm:px-4">
+            <div className="flex items-center justify-start sm:justify-center overflow-x-auto scrollbar-hide gap-0.5 sm:gap-2 py-1 sm:py-1.5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {TABS.map((tab) => {
                 const isActive = activeTab === tab.id;
                 return (
@@ -98,7 +98,7 @@ export function ConsoleLayout() {
                     key={tab.id}
                     onClick={() => handleTabClick(tab.id)}
                     className={`
-                      relative shrink-0 font-pixel text-[10px] sm:text-xs tracking-wider px-3 sm:px-4 py-2 sm:py-2.5
+                      relative shrink-0 font-pixel text-[9px] sm:text-[10px] md:text-xs tracking-wider px-2.5 sm:px-3 md:px-4 py-2 sm:py-2.5
                       transition-all duration-200 border-b-2
                       ${
                         isActive

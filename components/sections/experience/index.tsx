@@ -35,22 +35,22 @@ export const ExperienceSection = () => {
                 transition={{ duration: 0.5, delay: index * 0.15 }}
                 className="retro-window-green"
               >
-                <div className="retro-title-bar retro-title-bar-green text-xs sm:text-sm font-pixel py-2.5 px-4">
-                  <span>{exp.role} @ {exp.company}</span>
-                  <span>{exp.current ? "ACTIVE" : "COMPLETE"}</span>
+                <div className="retro-title-bar retro-title-bar-green text-[10px] sm:text-xs font-pixel py-2 sm:py-2.5 px-3 sm:px-4 flex flex-wrap gap-1">
+                  <span className="truncate max-w-[75%]">{exp.role} @ {exp.company}</span>
+                  <span className="ml-auto">{exp.current ? "ACTIVE" : "COMPLETE"}</span>
                 </div>
-                <div className="p-6 sm:p-8 space-y-5">
+                <div className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-5">
                   {/* Role & Company */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-retro-green/20 pb-4">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-2 border-b border-retro-green/20 pb-4">
                     <div>
-                      <h3 className="font-pixel text-sm sm:text-base text-retro-yellow tracking-wider">
+                      <h3 className="font-pixel text-xs sm:text-sm md:text-base text-retro-yellow tracking-wider">
                         {exp.role}
                       </h3>
-                      <p className="font-pixel text-xs text-retro-cyan tracking-wider mt-1">
+                      <p className="font-pixel text-[10px] sm:text-xs text-retro-cyan tracking-wider mt-1">
                         {exp.company} {exp.location ? `(${exp.location})` : ""}
                       </p>
                     </div>
-                    <p className="font-pixel text-xs text-muted-foreground tracking-wider">
+                    <p className="font-pixel text-[10px] sm:text-xs text-muted-foreground tracking-wider shrink-0">
                       {exp.startDate.mm} {exp.startDate.yyyy} — {endLabel}
                     </p>
                   </div>

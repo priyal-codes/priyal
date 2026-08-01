@@ -74,8 +74,8 @@ export function CartridgeCard({ project, index }: CartridgeCardProps) {
       </div>
 
       {/* ── Game Label Sticker Area ── */}
-      <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between">
-        <div className={`w-full border-2 ${theme.border} bg-[#12141a] p-4 sm:p-5 relative`}>
+      <div className="p-3 sm:p-4 md:p-6 flex-1 flex flex-col justify-between">
+        <div className={`w-full border-2 ${theme.border} bg-[#12141a] p-3 sm:p-4 md:p-5 relative`}>
 
 
 
@@ -90,11 +90,11 @@ export function CartridgeCard({ project, index }: CartridgeCardProps) {
           </p>
 
           {/* Tech Badges */}
-          <div className="flex flex-wrap gap-2 pt-3 border-t border-white/10">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-3 border-t border-white/10">
             {project.technologies.map((tech) => (
               <span
                 key={tech}
-                className={`font-pixel text-xs px-2.5 py-1 border ${theme.badgeBorder} ${theme.badgeText} ${theme.badgeBg} tracking-wider`}
+                className={`font-pixel text-[10px] sm:text-xs px-2 sm:px-2.5 py-1 border ${theme.badgeBorder} ${theme.badgeText} ${theme.badgeBg} tracking-wider`}
               >
                 {tech}
               </span>
@@ -103,7 +103,7 @@ export function CartridgeCard({ project, index }: CartridgeCardProps) {
         </div>
 
         {/* ── Action Buttons ── */}
-        <div className="flex items-center gap-3 pt-5">
+        <div className="flex items-center flex-wrap gap-2 sm:gap-3 pt-4 sm:pt-5">
           {project.links.live && (
             <Link
               href={project.links.live}

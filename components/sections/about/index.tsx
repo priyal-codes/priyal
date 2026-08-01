@@ -41,7 +41,7 @@ export const AboutSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-2 retro-window-yellow flex flex-col justify-between p-6 sm:p-8 min-h-[380px]"
+            className="lg:col-span-2 retro-window-yellow flex flex-col justify-between p-4 sm:p-6 md:p-8 min-h-[320px] sm:min-h-[380px]"
           >
             {/* Top Indicator */}
             <div className="flex items-center justify-between border-b border-retro-yellow/20 pb-4 mb-6">
@@ -129,14 +129,14 @@ export const AboutSection = () => {
             </div>
 
             {/* Bottom Tab Pill Controls */}
-            <div className="flex items-center gap-2 flex-wrap pt-6 border-t border-retro-yellow/20 mt-6">
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap pt-6 border-t border-retro-yellow/20 mt-6">
               {tabs.map((tab) => {
                 const isActive = activeTab === tab.id;
                 return (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`font-mono text-xs sm:text-sm font-bold px-4 py-2 border transition-all ${
+                    className={`font-mono text-[10px] sm:text-xs font-bold px-2.5 sm:px-4 py-1.5 sm:py-2 border transition-all ${
                       isActive
                         ? "border-retro-cyan text-retro-cyan bg-retro-cyan/15 shadow-[0_0_12px_rgba(0,255,255,0.3)]"
                         : "border-white/20 text-white/60 hover:text-white hover:border-white/40"
@@ -155,7 +155,7 @@ export const AboutSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="retro-window relative overflow-hidden flex flex-col items-center justify-center p-3 group min-h-[380px]"
+            className="retro-window relative overflow-hidden flex flex-col items-center justify-center p-3 group min-h-[280px] sm:min-h-[380px]"
           >
             {/* Corner Bracket Accents */}
             <div className="absolute top-2 left-2 text-retro-cyan font-pixel text-xs pointer-events-none z-10">┌</div>
@@ -164,7 +164,7 @@ export const AboutSection = () => {
             <div className="absolute bottom-2 right-2 text-retro-cyan font-pixel text-xs pointer-events-none z-10">┘</div>
 
             {/* Image Container */}
-            <div className="relative w-full h-full min-h-[340px] rounded-none overflow-hidden bg-black/60 border border-white/10 flex items-center justify-center">
+            <div className="relative w-full h-full min-h-[240px] sm:min-h-[340px] rounded-none overflow-hidden bg-black/60 border border-white/10 flex items-center justify-center">
               <Image
                 src="/images/me.png"
                 alt={profile.name.full}

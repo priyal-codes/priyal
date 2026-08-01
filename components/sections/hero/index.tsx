@@ -31,11 +31,11 @@ export const HeroSection = () => {
     <section
       id="hero"
       ref={containerRef}
-      className="relative flex flex-col min-h-[calc(100vh-104px)] w-full items-center justify-between bg-transparent overflow-hidden"
+      className="relative flex flex-col min-h-[calc(100dvh-88px)] sm:min-h-[calc(100vh-104px)] w-full items-center justify-between bg-transparent overflow-hidden"
     >
       <motion.main
         style={{ opacity, scale, y }}
-        className="relative w-full min-h-[calc(100vh-104px)] flex flex-col items-center justify-between pt-6 pb-0 overflow-hidden"
+        className="relative w-full min-h-[calc(100dvh-88px)] sm:min-h-[calc(100vh-104px)] flex flex-col items-center justify-between pt-4 sm:pt-6 pb-0 overflow-hidden"
       >
         {/* ── Decorative Pixel Stars ── */}
         <div className="absolute inset-0 pointer-events-none z-0">
@@ -61,7 +61,7 @@ export const HeroSection = () => {
         </div>
 
         {/* ── Main Content Grid: Left Title Card + Right Arcade Box ── */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 my-auto py-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-3 sm:px-4 my-auto py-3 sm:py-4 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
           {/* Left Column: Developer Profile Card (6 cols) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -69,7 +69,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 flex flex-col justify-between h-full"
           >
-            <div className="retro-window-green p-6 sm:p-8 w-full h-full flex flex-col justify-between relative scanlines">
+            <div className="retro-window-green p-4 sm:p-6 md:p-8 w-full h-full flex flex-col justify-between relative scanlines">
               {/* Title Bar */}
               <div className="retro-title-bar text-xs font-pixel py-2 px-4 flex items-center justify-between mb-4">
                 <span className="text-retro-yellow flex items-center gap-2">
@@ -93,7 +93,7 @@ export const HeroSection = () => {
                   initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-pixel text-white text-3xl sm:text-4xl lg:text-5xl tracking-wider leading-relaxed"
+                  className="font-pixel text-white text-2xl sm:text-3xl lg:text-5xl tracking-wider leading-relaxed"
                 >
                   {profile.name.full.toUpperCase()}
                 </motion.h1>

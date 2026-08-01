@@ -88,13 +88,13 @@ export const ContactSection = () => {
                     key={social.name}
                     href={social.url}
                     target="_blank"
-                    className="flex items-center gap-3 group bg-white/5 p-3 border border-retro-blue/30 hover:border-retro-cyan transition-all"
+                    className="flex items-center gap-2 sm:gap-3 group bg-white/5 p-2.5 sm:p-3 border border-retro-blue/30 hover:border-retro-cyan transition-all"
                   >
-                    <span className="font-pixel text-xs text-retro-blue group-hover:text-retro-cyan transition-colors">▸</span>
-                    <span className="font-pixel text-xs sm:text-sm text-white/90 group-hover:text-retro-cyan transition-colors tracking-wider">
+                    <span className="font-pixel text-xs text-retro-blue group-hover:text-retro-cyan transition-colors shrink-0">▸</span>
+                    <span className="font-pixel text-[10px] sm:text-xs text-white/90 group-hover:text-retro-cyan transition-colors tracking-wider truncate">
                       {social.name.toUpperCase()}
                     </span>
-                    <span className="font-pixel text-xs text-muted-foreground ml-auto">
+                    <span className="font-pixel text-[10px] sm:text-xs text-muted-foreground ml-auto shrink-0 truncate max-w-[40%]">
                       @{social.handle}
                     </span>
                   </Link>
