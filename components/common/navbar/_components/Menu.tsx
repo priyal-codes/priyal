@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Download } from "lucide-react";
 
 import {
@@ -13,23 +13,25 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { socials } from "@/constant";
+import { useConsole, type TabId } from "@/components/common/console-layout";
 
 const RESUME_PATH = "/docs/priyal_ramteke_resume.pdf";
 
 export interface MenuItem {
   label: string;
-  link: string;
+  tabId?: TabId;
+  link?: string;
   ariaLabel?: string;
   isDownload?: boolean;
 }
 
 const SECTION_ITEMS: MenuItem[] = [
-  { label: "Home", link: "/#hero" },
-  { label: "About", link: "/#about" },
-  { label: "Skills", link: "/#skills" },
-  { label: "Experience", link: "/#experience" },
-  { label: "Work", link: "/#work" },
-  { label: "Contact", link: "/#contact" },
+  { label: "Home", tabId: "home" },
+  { label: "About", tabId: "about" },
+  { label: "Skills", tabId: "skills" },
+  { label: "Experience", tabId: "experience" },
+  { label: "Projects", tabId: "work" },
+  { label: "Contact", tabId: "contact" },
 ];
 
 const BASE_PAGE_ITEMS: MenuItem[] = [
@@ -40,25 +42,22 @@ const BASE_PAGE_ITEMS: MenuItem[] = [
 export const Menu = () => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
-  const handleSectionClick = (e: React.MouseEvent, link: string) => {
+  // Try to use console context (only available on main page)
+  let consoleCtx: { activeTab: TabId; setActiveTab: (tab: TabId) => void } | null = null;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    consoleCtx = useConsole();
+  } catch {
+    consoleCtx = null;
+  }
+
+  const handleSectionClick = (e: React.MouseEvent, tabId: TabId) => {
     e.preventDefault();
     setOpen(false);
 
-    const targetId = link.replace("/#", "");
-
-    if (pathname === "/") {
-      const element = document.getElementById(targetId);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      } else {
-        window.history.pushState(null, "", `#${targetId}`);
-      }
-    } else {
-      router.push(`/#${targetId}`);
+    if (consoleCtx) {
+      consoleCtx.setActiveTab(tabId);
     }
   };
 
@@ -128,22 +127,35 @@ export const Menu = () => {
               Sections
             </span>
             <ul className="flex flex-col gap-1">
-              {SECTION_ITEMS.map((item, idx) => (
-                <li key={item.label}>
-                  <a
-                    href={item.link}
-                    onClick={(e) => handleSectionClick(e, item.link)}
-                    className="py-3 px-3 hover:bg-retro-green/10 border border-transparent hover:border-retro-green/30 transition-all duration-200 group flex items-center justify-between"
-                  >
-                    <span className="font-pixel text-xs sm:text-sm uppercase tracking-wider text-white/90 group-hover:text-retro-green transition-colors">
-                      {item.label}
-                    </span>
-                    <span className="font-pixel text-xs text-retro-green/80">
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                  </a>
-                </li>
-              ))}
+              {SECTION_ITEMS.map((item, idx) => {
+                const isActive = consoleCtx?.activeTab === item.tabId;
+                return (
+                  <li key={item.label}>
+                    <a
+                      href="#"
+                      onClick={(e) => item.tabId && handleSectionClick(e, item.tabId)}
+                      className={`py-3 px-3 border border-transparent transition-all duration-200 group flex items-center justify-between ${
+                        isActive
+                          ? "bg-retro-green/15 border-retro-green/40 text-retro-green"
+                          : "hover:bg-retro-green/10 hover:border-retro-green/30"
+                      }`}
+                    >
+                      <span
+                        className={`font-pixel text-xs sm:text-sm uppercase tracking-wider transition-colors ${
+                          isActive
+                            ? "text-retro-green"
+                            : "text-white/90 group-hover:text-retro-green"
+                        }`}
+                      >
+                        {isActive && "▶ "}{item.label}
+                      </span>
+                      <span className="font-pixel text-xs text-retro-green/80">
+                        {String(idx + 1).padStart(2, "0")}
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -173,7 +185,7 @@ export const Menu = () => {
                       </a>
                     ) : (
                       <Link
-                        href={item.link}
+                        href={item.link || "#"}
                         onClick={() => setOpen(false)}
                         className="py-3 px-3 hover:bg-retro-green/10 border border-transparent hover:border-retro-green/30 transition-all group flex items-center justify-between"
                       >

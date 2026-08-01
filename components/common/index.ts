@@ -1,3 +1,4 @@
+export * from "./console-layout";
 export * from "./footer";
 export * from "./navbar";
 export * from "./section-header";

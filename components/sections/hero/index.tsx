@@ -3,8 +3,17 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { profile } from "@/constant";
+import { useConsole } from "@/components/common/console-layout";
 
 export const HeroSection = () => {
+  let consoleCtx: ReturnType<typeof useConsole> | null = null;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    consoleCtx = useConsole();
+  } catch {
+    consoleCtx = null;
+  }
+
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -86,7 +95,11 @@ export const HeroSection = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
                 onClick={() => {
-                  document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+                  if (consoleCtx) {
+                    consoleCtx.setActiveTab("about");
+                  } else {
+                    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+                  }
                 }}
                 className="mt-4 retro-btn border-retro-green text-retro-green bg-retro-green/10 hover:bg-retro-green/20 text-xs sm:text-sm px-6 py-3 animate-retro-blink"
                 style={{ animationDuration: "1.5s" }}

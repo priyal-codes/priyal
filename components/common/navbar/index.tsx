@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
@@ -10,68 +9,16 @@ import { Menu } from "./_components/Menu";
 import { profile } from "@/constant";
 
 export const Navbar = () => {
-  const [isVisible, setIsVisible] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    const SCROLL_THRESHOLD = 10;
-    const HIDE_DELTA = 5;
-
-    const updateNavbar = () => {
-      const currentScrollY = window.scrollY;
-
-      setIsScrolled(currentScrollY > SCROLL_THRESHOLD);
-
-      const delta = currentScrollY - lastScrollY;
-
-      if (currentScrollY <= SCROLL_THRESHOLD) {
-        setIsVisible(true);
-      } else if (Math.abs(delta) > HIDE_DELTA) {
-        setIsVisible(delta < 0);
-      }
-
-      lastScrollY = currentScrollY;
-      ticking = false;
-    };
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateNavbar);
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <motion.nav
-      initial={{ y: 0, opacity: 1 }}
-      animate={{
-        y: isVisible ? 0 : -90,
-        opacity: isVisible ? 1 : 0,
-      }}
-      transition={{
-        duration: 0.35,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out pointer-events-auto"
-      )}
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      className="sticky top-0 left-0 right-0 z-50"
     >
       <div
         className={cn(
-          "px-4 sm:px-6 py-3 transition-all duration-300 border-b-2",
-          isScrolled
-            ? "border-retro-green/30 bg-black/90 backdrop-blur-md"
-            : "border-transparent bg-transparent"
+          "px-4 sm:px-6 py-3 border-b-2 border-retro-green/30 bg-black/95 backdrop-blur-md"
         )}
       >
         <div className="flex items-center justify-between max-w-7xl mx-auto">
