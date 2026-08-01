@@ -61,16 +61,24 @@ export const HeroSection = () => {
         </div>
 
         {/* ── Main Content Grid: Left Title Card + Right Arcade Box ── */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 my-auto py-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 my-auto py-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           {/* Left Column: Developer Profile Card (6 cols) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left"
+            className="lg:col-span-6 flex flex-col justify-between h-full"
           >
-            <div className="retro-window-green p-6 sm:p-8 w-full relative scanlines">
-              <div className="relative z-10 flex flex-col items-center lg:items-start gap-4 sm:gap-5">
+            <div className="retro-window-green p-6 sm:p-8 w-full h-full flex flex-col justify-between relative scanlines">
+              {/* Title Bar */}
+              <div className="retro-title-bar text-xs font-pixel py-2 px-4 flex items-center justify-between mb-4">
+                <span className="text-retro-yellow flex items-center gap-2">
+                  💻 DEVELOPER PROFILE
+                </span>
+                <span className="text-retro-green animate-pulse">● ONLINE</span>
+              </div>
+
+              <div className="relative z-10 flex flex-col items-center lg:items-start gap-4 sm:gap-5 my-auto">
                 <motion.span
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -127,7 +135,7 @@ export const HeroSection = () => {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 retro-window-blue flex flex-col justify-between overflow-hidden"
+            className="lg:col-span-6 retro-window-blue flex flex-col justify-between h-full overflow-hidden"
           >
             {/* Title Bar */}
             <div className="retro-title-bar retro-title-bar-blue text-xs font-pixel py-2 px-4 flex items-center justify-between">
@@ -138,7 +146,7 @@ export const HeroSection = () => {
             </div>
 
             {/* Playable Game Container */}
-            <div className="p-3 sm:p-4 flex flex-col items-center justify-center bg-black/80 relative">
+            <div className="p-3 sm:p-4 flex-1 flex flex-col items-center justify-between bg-black/80 relative">
               <PacManGame />
               <div className="w-full flex items-center justify-between pt-2.5 border-t border-retro-blue/30 mt-2.5 font-pixel text-[10px] text-retro-cyan">
                 <span>[CONTROLS: ▲ ▼ ◄ ► / WASD]</span>
