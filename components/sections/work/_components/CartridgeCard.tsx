@@ -76,11 +76,8 @@ export function CartridgeCard({ project, index }: CartridgeCardProps) {
       {/* ── Game Label Sticker Area ── */}
       <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between">
         <div className={`w-full border-2 ${theme.border} bg-[#12141a] p-4 sm:p-5 relative`}>
-          {/* Official Seal Badge */}
-          <div className="absolute top-3 right-3 hidden sm:flex flex-col items-center justify-center w-10 h-10 border border-retro-yellow/60 rounded-full bg-retro-yellow/10 p-1 text-center">
-            <span className="font-pixel text-[5px] text-retro-yellow leading-none">OFFICIAL</span>
-            <span className="font-pixel text-[6px] text-white leading-none mt-0.5">SEAL</span>
-          </div>
+
+
 
           {/* Sticker Header */}
           <div className={`inline-block px-3 py-1 font-pixel text-xs font-bold ${theme.titleBg} mb-3 tracking-wider`}>
