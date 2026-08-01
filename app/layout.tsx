@@ -3,7 +3,7 @@ import "./globals.css";
 
 import { cn } from "@/lib/utils";
 
-import { main, heading, signature, mono, serif } from "@/app/fonts";
+import { main, heading, signature, mono, serif, pixel } from "@/app/fonts";
 import { Background, PreLoader } from "@/components/mics";
 import { SmoothScrollProvider } from "@/components/common";
 import { Toaster } from "@/components/ui/sonner";
@@ -40,6 +40,7 @@ export default function RootLayout({
         signature.variable,
         mono.variable,
         serif.variable,
+        pixel.variable,
       )}
     >
       <head>

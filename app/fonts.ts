@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif, Press_Start_2P } from "next/font/google";
 import localFont from "next/font/local";
 
 export const main = Geist({
@@ -16,6 +16,13 @@ export const serif = Instrument_Serif({
 export const mono = Geist_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
+});
+
+export const pixel = Press_Start_2P({
+  variable: "--font-pixel",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
 });
 
 export const heading = localFont({

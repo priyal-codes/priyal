@@ -25,7 +25,7 @@ export const FirstName = () => {
 
       {/* SVG First Name */}
       <svg
-        className="w-full h-20 sm:h-28 md:h-40 lg:h-48 overflow-visible select-none -mb-1"
+        className="w-full h-14 sm:h-20 md:h-28 lg:h-32 overflow-visible select-none -mb-1"
         width="100%"
         viewBox="0 0 400 130"
         preserveAspectRatio="none"

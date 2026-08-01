@@ -8,7 +8,7 @@ export const LastName = () => {
   return (
     <div className="w-full my-2">
       <svg
-        className="w-full h-28 sm:h-44 md:h-64 lg:h-80 xl:h-96 overflow-visible select-none"
+        className="w-full h-16 sm:h-24 md:h-36 lg:h-44 xl:h-52 overflow-visible select-none"
         width="100%"
         viewBox="0 0 1000 220"
         preserveAspectRatio="none"

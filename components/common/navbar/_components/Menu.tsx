@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu as MenuIcon, X, Download } from "lucide-react";
+import { Download } from "lucide-react";
 
 import {
   Sheet,
@@ -35,7 +35,6 @@ const SECTION_ITEMS: MenuItem[] = [
 const BASE_PAGE_ITEMS: MenuItem[] = [
   { label: "Resume", link: "/resume" },
   { label: "Projects", link: "/projects" },
-  { label: "Blog", link: "/blogs" },
 ];
 
 export const Menu = () => {
@@ -47,17 +46,12 @@ export const Menu = () => {
     e.preventDefault();
     setOpen(false);
 
-    const targetId = link.replace("/#", "");
+    let targetId = link.replace("/#", "");
+    if (targetId === "hero") targetId = "home";
 
     if (pathname === "/") {
-      const element = document.getElementById(targetId);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      } else {
-        window.history.pushState(null, "", `#${targetId}`);
-      }
+      window.location.hash = `#${targetId}`;
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
     } else {
       router.push(`/#${targetId}`);
     }
@@ -87,66 +81,59 @@ export const Menu = () => {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      {/* Navbar Trigger Button */}
+      {/* Retro Trigger Button */}
       <button
         onClick={() => setOpen(!open)}
-        className="relative z-50 flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-primary/20 bg-glass-bg hover:border-accent/40 text-foreground transition-all duration-200 shadow-md backdrop-blur-md cursor-pointer group"
+        className="retro-btn border-retro-green text-retro-green bg-retro-green/10 hover:bg-retro-green/20 text-xs sm:text-sm px-4 py-2 font-bold"
         aria-label={open ? "Close menu" : "Open menu"}
       >
-        <span className="text-xs sm:text-sm font-medium tracking-wide">
-          {open ? "Close" : "Menu"}
-        </span>
-        {open ? (
-          <X className="w-4 h-4 text-accent transition-transform duration-200 rotate-90" />
-        ) : (
-          <MenuIcon className="w-4 h-4 group-hover:text-accent transition-colors" />
-        )}
+        {open ? "✕ CLOSE" : "≡ MENU"}
       </button>
 
-      {/* Sheet Content Side Drawer */}
+      {/* Sheet Content — Retro Side Drawer */}
       <SheetContent
         side="right"
         showCloseButton={false}
-        className="z-999 border-l border-sidebar-border bg-sidebar/95 backdrop-blur-2xl text-sidebar-foreground w-full max-w-sm sm:max-w-md h-full flex flex-col p-0 gap-0"
+        className="z-999 border-l-3 border-retro-green bg-black/95 backdrop-blur-md text-foreground w-full max-w-sm sm:max-w-md h-full flex flex-col p-0 gap-0"
       >
         <SheetHeader className="sr-only">
           <SheetTitle>Navigation Menu</SheetTitle>
           <SheetDescription>Main navigation and section links</SheetDescription>
         </SheetHeader>
 
-        {/* Sidebar Header */}
-        <div className="flex flex-row items-center justify-between p-4 pt-16 sm:pt-6 border-b border-sidebar-border shrink-0">
-          <span className="text-xs font-mono tracking-widest text-accent uppercase font-semibold">
+        {/* Header */}
+        <div className="flex flex-row items-center justify-between p-5 pt-16 sm:pt-6 border-b-2 border-retro-green/30 shrink-0">
+          <span className="font-pixel text-xs sm:text-sm tracking-widest text-retro-green uppercase">
             Navigation
           </span>
           <button
             onClick={() => setOpen(false)}
-            className="p-1.5 rounded-lg bg-primary/5 border border-primary/10 text-secondary hover:text-foreground hover:bg-primary/10 transition-all cursor-pointer"
+            className="retro-btn border-retro-pink text-retro-pink text-xs px-3 py-1.5 font-bold"
             aria-label="Close sidebar"
           >
-            <X className="w-4 h-4 text-accent" />
+            ✕
           </button>
         </div>
 
-        {/* Scrollable Sidebar Content */}
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 gap-6 flex flex-col min-h-0">
-          {/* Sections Group */}
-          <div className="p-0 flex flex-col gap-2">
-            <span className="text-[11px] font-mono tracking-widest text-accent/80 uppercase font-semibold px-2 mb-1">
+        {/* Scrollable Content */}
+        <div className="p-5 sm:p-6 overflow-y-auto flex-1 gap-6 flex flex-col min-h-0">
+          {/* Sections */}
+          <div className="flex flex-col gap-1">
+            <span className="font-pixel text-xs tracking-widest text-retro-pink uppercase px-2 mb-2">
               Sections
             </span>
-            <ul className="flex w-full min-w-0 flex-col gap-1">
+            <ul className="flex flex-col gap-1">
               {SECTION_ITEMS.map((item, idx) => (
-                <li key={item.label} className="group/menu-item relative">
+                <li key={item.label}>
                   <a
                     href={item.link}
                     onClick={(e) => handleSectionClick(e, item.link)}
-                    className="h-auto py-2 px-3 hover:bg-sidebar-accent/10 hover:text-accent rounded-lg border border-transparent hover:border-accent/20 transition-all duration-200 group flex items-center justify-between"
+                    className="py-3 px-3 hover:bg-retro-green/10 border border-transparent hover:border-retro-green/30 transition-all duration-200 group flex items-center justify-between"
                   >
-                    <span className="text-lg sm:text-2xl font-bold uppercase tracking-tight text-sidebar-foreground group-hover:text-accent group-hover:translate-x-1 transition-all duration-200">
+                    <span className="font-pixel text-xs sm:text-sm uppercase tracking-wider text-white/90 group-hover:text-retro-green transition-colors">
                       {item.label}
                     </span>
-                    <span className="font-mono text-xs text-accent/80 font-medium">
+                    <span className="font-pixel text-xs text-retro-green/80">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
                   </a>
@@ -155,47 +142,41 @@ export const Menu = () => {
             </ul>
           </div>
 
-          {/* Pages Group */}
+          {/* Pages */}
           {filteredPageItems.length > 0 && (
-            <div className="p-0 pt-4 border-t border-sidebar-border flex flex-col gap-2">
-              <span className="text-[11px] font-mono tracking-widest text-accent/80 uppercase font-semibold px-2 mb-1">
+            <div className="pt-4 border-t-2 border-retro-green/20 flex flex-col gap-1">
+              <span className="font-pixel text-xs tracking-widest text-retro-yellow uppercase px-2 mb-2">
                 Pages
               </span>
-              <ul className="flex w-full min-w-0 flex-col gap-1">
+              <ul className="flex flex-col gap-1">
                 {filteredPageItems.map((item, idx) => (
-                  <li key={item.label} className="group/menu-item relative">
+                  <li key={item.label}>
                     {item.isDownload ? (
                       <a
                         href={item.link}
                         download="Priyal_Ramteke_Resume.pdf"
                         onClick={() => setOpen(false)}
-                        className="h-auto py-2 px-3 bg-accent/10 hover:bg-accent/20 border border-accent/30 text-accent rounded-xl transition-all duration-200 flex items-center justify-between"
+                        className="py-3 px-3 bg-retro-yellow/10 border border-retro-yellow/30 hover:bg-retro-yellow/20 transition-all flex items-center justify-between"
                       >
-                        <span className="text-base sm:text-xl font-semibold uppercase tracking-tight flex items-center gap-2">
-                          <Download className="w-4 h-4 text-accent" />
+                        <span className="font-pixel text-xs uppercase tracking-wider text-retro-yellow flex items-center gap-2">
+                          <Download className="w-3.5 h-3.5" />
                           {item.label}
                         </span>
-                        <span className="font-mono text-xs text-accent">
-                          {String(SECTION_ITEMS.length + idx + 1).padStart(
-                            2,
-                            "0",
-                          )}
+                        <span className="font-pixel text-xs text-retro-yellow/80">
+                          {String(SECTION_ITEMS.length + idx + 1).padStart(2, "0")}
                         </span>
                       </a>
                     ) : (
                       <Link
                         href={item.link}
                         onClick={() => setOpen(false)}
-                        className="h-auto py-2 px-3 hover:bg-sidebar-accent/10 hover:text-accent rounded-lg border border-transparent hover:border-accent/20 transition-all duration-200 group flex items-center justify-between"
+                        className="py-3 px-3 hover:bg-retro-green/10 border border-transparent hover:border-retro-green/30 transition-all group flex items-center justify-between"
                       >
-                        <span className="text-lg sm:text-2xl font-bold uppercase tracking-tight text-sidebar-foreground group-hover:text-accent group-hover:translate-x-1 transition-all duration-200">
+                        <span className="font-pixel text-xs sm:text-sm uppercase tracking-wider text-white/90 group-hover:text-retro-green transition-colors">
                           {item.label}
                         </span>
-                        <span className="font-mono text-xs text-accent/80 font-medium">
-                          {String(SECTION_ITEMS.length + idx + 1).padStart(
-                            2,
-                            "0",
-                          )}
+                        <span className="font-pixel text-xs text-retro-green/80">
+                          {String(SECTION_ITEMS.length + idx + 1).padStart(2, "0")}
                         </span>
                       </Link>
                     )}
@@ -206,26 +187,21 @@ export const Menu = () => {
           )}
         </div>
 
-        {/* Sidebar Footer */}
-        <div className="p-4 sm:p-6 border-t border-sidebar-border flex flex-col gap-2.5 shrink-0">
-          <span className="text-[11px] font-mono tracking-widest text-accent/80 uppercase font-semibold px-1">
+        {/* Footer Socials */}
+        <div className="p-5 sm:p-6 border-t-2 border-retro-green/20 flex flex-col gap-3 shrink-0">
+          <span className="font-pixel text-xs tracking-widest text-retro-cyan uppercase px-1">
             Socials
           </span>
-          <div className="flex flex-wrap gap-x-3 gap-y-2">
+          <div className="flex flex-wrap gap-2.5">
             {socials.map((social) => (
               <a
                 key={social.name}
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative px-2.5 py-1 text-xs font-medium text-secondary hover:text-accent transition-colors duration-200 group inline-block"
+                className="retro-btn border-retro-cyan/50 text-retro-cyan text-xs px-3 py-1.5 hover:bg-retro-cyan/15 font-bold"
               >
-                <span className="absolute top-0 left-0 w-1.5 h-1.5 border-t border-l border-accent opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none" />
-                <span className="absolute top-0 right-0 w-1.5 h-1.5 border-t border-r border-accent opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none" />
-                <span className="absolute bottom-0 left-0 w-1.5 h-1.5 border-b border-l border-accent opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none" />
-                <span className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-accent opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none" />
-
-                <span>{social.name}</span>
+                {social.name.toUpperCase()}
               </a>
             ))}
           </div>

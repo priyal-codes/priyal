@@ -1,66 +1,56 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Separator } from "@/components/ui/separator";
-
-import { FirstName } from "./_components/FirstName";
-import { NavigationColumn } from "./_components/NavigationColumn";
-import { SocialColumn } from "./_components/SocialColumn";
-import { ConnectColumn } from "./_components/ConnectColumn";
-import { LastName } from "./_components/LastName";
-import { CopyrightBar } from "./_components/CopyrightBar";
+import { profile } from "@/constant";
 
 export const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <motion.footer
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full bg-black/80 backdrop-blur-2xl text-foreground pt-8 pb-8 px-4 sm:px-8 md:px-12 border-t border-border/40"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="w-full bg-black border-t-2 border-retro-green/30 pt-10 pb-8 px-4 sm:px-8 md:px-12"
     >
-      <div className="max-w-7xl mx-auto flex flex-col">
-        {/* Top Section Grid & Flex Ordering */}
-        <div className="flex flex-col md:flex-row items-stretch justify-between gap-8 md:gap-0">
-          {/* Navigation Column */}
-          <div className="order-1 md:order-2 w-full md:w-[18%] flex flex-col justify-start">
-            <NavigationColumn />
-          </div>
+      <div className="max-w-5xl mx-auto flex flex-col items-center gap-6">
+        {/* Game Over / End Title */}
+        <h2 className="font-pixel text-retro-yellow text-base sm:text-lg tracking-widest text-center">
+          THANKS FOR VISITING!
+        </h2>
 
-          <Separator
-            orientation="vertical"
-            className="hidden md:block order-2 md:order-3 mx-4 lg:mx-6 self-stretch min-h-50"
-          />
-
-          {/* Social Column */}
-          <div className="order-2 md:order-4 w-full md:w-[18%] flex flex-col justify-start">
-            <SocialColumn />
-          </div>
-
-          <Separator
-            orientation="vertical"
-            className="hidden md:block order-3 md:order-5 mx-4 lg:mx-6 self-stretch min-h-50"
-          />
-
-          {/* Connect Column */}
-          <div className="order-3 md:order-6 w-full md:w-[18%] flex flex-col justify-between">
-            <ConnectColumn />
-          </div>
-
-          {/* First Name Column (Includes top-left scroll to top icon) */}
-          <div className="order-4 md:order-1 w-full md:w-[38%] flex flex-col justify-between">
-            <FirstName />
-          </div>
+        {/* Pixel divider */}
+        <div className="flex items-center gap-1.5">
+          {Array.from({ length: 20 }, (_, i) => (
+            <div
+              key={i}
+              className="w-2.5 h-2.5"
+              style={{
+                backgroundColor: i % 3 === 0 ? "#FF69B4" : i % 3 === 1 ? "#39FF14" : "#FFE135",
+                opacity: 0.6,
+              }}
+            />
+          ))}
         </div>
 
-        {/* Middle Section: Large Stretched Last Name */}
-        <LastName />
+        {/* Credits */}
+        <div className="flex flex-col items-center gap-1.5">
+          <p className="font-pixel text-xs text-muted-foreground tracking-wider">
+            DESIGNED & DEVELOPED BY
+          </p>
+          <p className="font-pixel text-sm sm:text-base text-retro-green tracking-widest">
+            {profile.name.full.toUpperCase()}
+          </p>
+        </div>
 
-        {/* Horizontal Separator with Signature in Middle */}
-        <Separator orientation="horizontal" showSignature className="my-6" />
+        {/* Copyright */}
+        <p className="font-pixel text-xs text-muted-foreground/80 tracking-wider">
+          © {currentYear} {profile.name.full} — ALL RIGHTS RESERVED
+        </p>
 
-        {/* Bottom Section: Rounded-md Container with Mono Text */}
-        <CopyrightBar />
+        {/* Blinking cursor */}
+        <span className="font-pixel text-retro-green text-sm animate-retro-blink">▮</span>
       </div>
     </motion.footer>
   );

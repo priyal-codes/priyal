@@ -7,48 +7,82 @@ export interface ExperienceDate {
 export interface BaseExperience {
   role: string;
   startDate: ExperienceDate;
+  endDate: ExperienceDate;
   description: string[];
   company: string;
-  companySite: string;
+  location?: string;
+  companySite?: string;
   technologies: string[];
+  projects?: string[];
+  current?: boolean;
 }
 
-export type Experience =
-  | (BaseExperience & {
-      current: true;
-      // endDate?: never;
-    })
-  | (BaseExperience & {
-      current?: false;
-      endDate: ExperienceDate;
-    });
+export type Experience = BaseExperience;
 
 export const experience: Experience[] = [
   {
-    role: "Software Developer",
+    role: "Junior Software Developer",
+    company: "Gohil Infotech",
+    location: "Ahmedabad",
     startDate: {
       dd: 1,
-      mm: "January",
-      yyyy: 2024,
+      mm: "March",
+      yyyy: 2026,
     },
-    current: true,
-    description: [
-      "Engineered full-stack client web applications, internal tools, and scalable REST services using React, Node.js, Express, and MongoDB.",
-      "Architected real-time communication systems, WebRTC video streaming rooms, and Socket.io live chat integrations.",
-      "Designed and optimized database schemas, index strategies, and Mongo session handling for production reliability.",
-      "Collaborated closely with cross-functional teams to deliver high-performance, responsive UI components and seamless API endpoints.",
-    ],
-    company: "Gohil Infotech",
+    endDate: {
+      dd: 31,
+      mm: "May",
+      yyyy: 2026,
+    },
+    current: false,
     companySite: "https://gohilinfotech.com/",
+    description: [
+      "Contributed to the development and maintenance of multiple web applications using modern web technologies.",
+      "Collaborated with senior developers to implement new features and enhance application functionality.",
+      "Identified and resolved bugs, optimized performance, and improved user experience across projects.",
+      "Participated in client discussions, requirement analysis, testing, and project delivery activities.",
+      "Key Projects: Houspire, SighaiMart, Gvoice, GIPL, ChetakPlus",
+    ],
     technologies: [
-      "React 19",
+      "React.js",
+      "Next.js",
       "Node.js",
       "Express.js",
       "MongoDB",
-      "WebRTC",
-      "Socket.io",
       "REST APIs",
-      "TypeScript",
+      "JavaScript",
+    ],
+  },
+  {
+    role: "MERN Stack Intern",
+    company: "Clustor Computing",
+    location: "Nagpur",
+    startDate: {
+      dd: 1,
+      mm: "December",
+      yyyy: 2025,
+    },
+    endDate: {
+      dd: 28,
+      mm: "February",
+      yyyy: 2026,
+    },
+    current: false,
+    companySite: "#",
+    description: [
+      "Developed full-stack web applications using MongoDB, Express.js, React.js, and Node.js.",
+      "Built and integrated RESTful APIs for seamless communication between frontend and backend systems.",
+      "Implemented user authentication, database operations, and responsive user interfaces.",
+      "Collaborated with team members using Git and GitHub to debug issues and enhance application functionality.",
+    ],
+    technologies: [
+      "React.js",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Git",
+      "GitHub",
+      "REST APIs",
     ],
   },
 ];

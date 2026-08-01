@@ -36,6 +36,7 @@ interface Titles {
 interface Profile {
   name: Name;
   email: string;
+  phone: string;
   work: Work;
   education: Education;
   DOB: DOB;
@@ -52,18 +53,19 @@ export const profile: Profile = {
     last: "Ramteke",
   },
 
-  email: "priyaldotcodes@gmail.com",
+  email: "priyalramteke008@gmail.com",
+  phone: "+91 77968 98161",
 
   work: {
-    title: "Software Developer",
-    company: "Gohil Infotech",
+    title: "Full Stack Developer",
+    company: "MERN Stack Specialist",
   },
 
   education: {
-    uni: "RTMNU University",
-    degree: "B. Tech / Graduation",
+    uni: "JD College of Engineering & Management",
+    degree: "B.Tech",
     major: "Computer Science & Engineering",
-    batch: "2020 - 2024",
+    batch: "2022 - 2026",
     location: {
       city: "Nagpur",
       state: "Maharashtra",
@@ -82,10 +84,10 @@ export const profile: Profile = {
   },
 
   about: [
-    "I build high-performance full-stack web applications, real-time communication systems, and resilient backend APIs.",
-    "Specialized in React 19, Node.js, Express, MongoDB, WebRTC, Socket.io, and database engineering with clean architecture.",
-    "Somewhere between technical curiosity, user-centric design, and reliable code, great digital products are born.",
-    "Still learning. Still shipping. Still building intuitive and impactful software applications every day.",
+    "Full Stack Developer with hands-on experience in MERN Stack development and web application maintenance.",
+    "Proficient in React.js, Next.js, Node.js, Express.js, MongoDB, REST API development, and SQL/MySQL database systems.",
+    "Strong problem solver and team collaborator with clear technical communication and high adaptability in fast-paced environments.",
+    "Passionate about clean architecture, user-centric design, performance optimization, and continuous learning.",
   ],
 
   hero_titles: {
@@ -99,5 +101,5 @@ export const profile: Profile = {
     ],
   },
 
-  quote: "Simplicity is prerequisite for reliability.",
+  quote: "Every morning you have two choices: continue to sleep with your dreams, or wake up and chase them.",
 };
