@@ -30,11 +30,11 @@ export const HeroSection = () => {
     <section
       id="hero"
       ref={containerRef}
-      className="relative flex flex-col min-h-screen w-full items-center justify-center bg-transparent overflow-hidden"
+      className="relative flex flex-col min-h-[calc(100vh-104px)] w-full items-center justify-between bg-transparent overflow-hidden"
     >
       <motion.main
         style={{ opacity, scale, y }}
-        className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden"
+        className="relative w-full min-h-[calc(100vh-104px)] flex flex-col items-center justify-between pt-12 pb-0 overflow-hidden"
       >
 
 
@@ -66,7 +66,7 @@ export const HeroSection = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 flex flex-col items-center px-4"
+          className="relative z-10 flex flex-col items-center px-4 my-auto"
         >
           {/* Title border frame */}
           <div className="retro-window-green px-8 sm:px-16 py-10 sm:py-14 relative scanlines text-center max-w-3xl">
@@ -125,7 +125,7 @@ export const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          className="absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center w-full"
+          className="relative z-20 flex flex-col items-center w-full mt-auto"
         >
           {/* Pac-Man Track Area */}
           <div className="w-full h-12 bg-black/70 border-t border-retro-yellow/40 relative overflow-hidden flex items-center">
