@@ -10,7 +10,7 @@ import {
   WorkSection,
   ContactSection,
 } from "@/components/sections";
-import { Footer } from "@/components/common";
+
 
 // ── Tab Definitions ──
 export type TabId = "home" | "about" | "skills" | "experience" | "work" | "contact";
@@ -137,8 +137,7 @@ export function ConsoleLayout() {
           </AnimatePresence>
         </main>
 
-        {/* ── Footer ── */}
-        <Footer />
+
       </div>
     </ConsoleContext.Provider>
   );
