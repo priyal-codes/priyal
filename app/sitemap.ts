@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 import { SITE_SEO } from "@/constant/seo";
-import { getAllPosts } from "@/lib/notion";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_SEO.siteUrl;
@@ -18,12 +17,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/projects`,
       lastModified,
       changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/blogs`,
-      lastModified,
-      changeFrequency: "daily",
       priority: 0.9,
     },
     {
@@ -64,19 +57,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Dynamic blog post routes from Notion
-  try {
-    const posts = await getAllPosts();
-    const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-      url: `${baseUrl}/blogs/${post.slug}`,
-      lastModified: post.date ? new Date(post.date) : lastModified,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    }));
-
-    return [...routes, ...blogRoutes];
-  } catch (error) {
-    console.error("Error generating blog routes for sitemap:", error);
-    return routes;
-  }
+  return routes;
 }
