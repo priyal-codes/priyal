@@ -148,10 +148,6 @@ export const HeroSection = () => {
             {/* Playable Game Container */}
             <div className="p-3 sm:p-4 flex-1 flex flex-col items-center justify-between bg-black/80 relative">
               <PacManGame />
-              <div className="w-full flex items-center justify-between pt-2.5 border-t border-retro-blue/30 mt-2.5 font-pixel text-[10px] text-retro-cyan">
-                <span>[CONTROLS: ▲ ▼ ◄ ► / WASD]</span>
-                <span>RETRO ARCADE v6</span>
-              </div>
             </div>
           </motion.div>
         </div>

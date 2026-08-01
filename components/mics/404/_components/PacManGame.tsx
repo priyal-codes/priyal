@@ -363,6 +363,12 @@ export const PacManGame: React.FC = () => {
 
   const startGame = useCallback(() => { resetLevel(true); }, [resetLevel]);
 
+  const endGame = useCallback(() => {
+    const g = G.current;
+    g.phase = "idle";
+    setUiPhase("idle");
+  }, []);
+
   // ── Direction input ──────────────────────────────────────────────────────
   const queueDir = useCallback((d: Dir) => {
     const g = G.current;
@@ -630,17 +636,39 @@ export const PacManGame: React.FC = () => {
           )}
         </div>
 
-        {/* Score + lives bar */}
+        {/* Score + lives + action buttons bar */}
         <div className="flex items-center justify-between px-4 py-2 bg-black border-t border-cyan-400/30">
           <div className="flex items-center gap-2">
-            <span className="font-pixel text-neutral-500 text-[7px]">SCORE</span>
-            <span className="font-pixel text-yellow-400 text-[10px]">{uiScore}</span>
+            <button
+              onClick={startGame}
+              className="px-2.5 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/50 rounded font-pixel text-[8px] tracking-wider cursor-pointer active:scale-95 flex items-center gap-1"
+            >
+              ▶ START
+            </button>
+            <button
+              onClick={endGame}
+              disabled={uiPhase === "idle"}
+              className={`px-2.5 py-1 rounded font-pixel text-[8px] tracking-wider flex items-center gap-1 ${
+                uiPhase === "idle"
+                  ? "bg-neutral-800/40 text-neutral-600 border border-neutral-700/40 cursor-not-allowed opacity-50"
+                  : "bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 border border-rose-500/50 cursor-pointer active:scale-95"
+              }`}
+            >
+              ⏹ END
+            </button>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="font-pixel text-neutral-500 text-[7px]">LIVES</span>
-            {Array.from({ length: Math.max(0, uiLives) }).map((_, i) => (
-              <span key={i} className="text-yellow-400 text-[11px] leading-none">●</span>
-            ))}
+
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5">
+              <span className="font-pixel text-neutral-500 text-[7px]">SCORE</span>
+              <span className="font-pixel text-yellow-400 text-[10px]">{uiScore}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="font-pixel text-neutral-500 text-[7px]">LIVES</span>
+              {Array.from({ length: Math.max(0, uiLives) }).map((_, i) => (
+                <span key={i} className="text-yellow-400 text-[11px] leading-none">●</span>
+              ))}
+            </div>
           </div>
         </div>
 
