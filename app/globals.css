@@ -131,10 +131,16 @@
   * {
     @apply border-border outline-ring/50;
   }
+  ::selection {
+    background-color: #39FF14;
+    color: #000000;
+  }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-mainFont), sans-serif;
     letter-spacing: 0.05rem;
+    user-select: text;
+    -webkit-user-select: text;
   }
 }
 

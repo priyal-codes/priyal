@@ -9,8 +9,6 @@ const SESSION_KEY = "preloader_shown_v1";
 
 const emptySubscribe = () => () => {};
 const getClientSnapshot = () => {
-  const isDev = process.env.NODE_ENV === "development";
-  if (isDev) return true;
   return sessionStorage.getItem(SESSION_KEY) !== "true";
 };
 const getServerSnapshot = () => false;
@@ -33,37 +31,15 @@ export const PreLoader = () => {
     document.body.classList.add("preloader-active");
     document.body.style.overflow = "hidden";
 
-    let timeElapsed = false;
-    let pageReady = document.readyState === "complete";
-
-    const finish = () => {
-      if (timeElapsed && pageReady) {
-        setHasEnded(true);
-        document.body.classList.remove("preloader-active");
-        document.body.style.overflow = "";
-        if (process.env.NODE_ENV !== "development") {
-          sessionStorage.setItem(SESSION_KEY, "true");
-        }
-      }
-    };
-
     const timer = setTimeout(() => {
-      timeElapsed = true;
-      finish();
-    }, 2000);
-
-    const handleLoad = () => {
-      pageReady = true;
-      finish();
-    };
-
-    if (!pageReady) {
-      window.addEventListener("load", handleLoad, { once: true });
-    }
+      setHasEnded(true);
+      document.body.classList.remove("preloader-active");
+      document.body.style.overflow = "";
+      sessionStorage.setItem(SESSION_KEY, "true");
+    }, 1200);
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener("load", handleLoad);
       document.body.classList.remove("preloader-active");
       document.body.style.overflow = "";
     };
@@ -85,9 +61,9 @@ export const PreLoader = () => {
           animate={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+            transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
           }}
-          className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-transparent select-none text-primary overflow-hidden w-full h-full pointer-events-auto"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black text-primary overflow-hidden w-full h-full pointer-events-none"
         >
           <div className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden z-10">
             {/* Hero Main Content Matching Container */}

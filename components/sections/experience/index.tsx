@@ -5,7 +5,7 @@ import { experience } from "@/constant";
 
 export const ExperienceSection = () => {
   return (
-    <section id="experience" className="relative w-full select-none px-2 sm:px-4 md:px-6 py-8 sm:py-14">
+    <section id="experience" className="relative w-full px-2 sm:px-4 md:px-6 py-8 sm:py-14">
       <div className="mx-auto w-full max-w-[1600px]">
         {/* Level Header */}
         <motion.div
@@ -15,10 +15,10 @@ export const ExperienceSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-10"
         >
-          <h2 className="font-pixel text-retro-green text-lg sm:text-2xl tracking-wider">
-            Experience
+          <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-retro-green uppercase tracking-wide">
+            Work Experience
           </h2>
-          <p className="font-pixel text-xs sm:text-sm text-retro-pink mt-2 tracking-wider">
+          <p className="font-mono text-xs sm:text-sm text-retro-pink font-medium tracking-wider mt-1.5">
             Work History & Engineering Roles
           </p>
         </motion.div>

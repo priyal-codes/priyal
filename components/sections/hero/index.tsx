@@ -21,7 +21,7 @@ export const HeroSection = () => {
     <section
       id="hero"
       ref={containerRef}
-      className="relative flex flex-col min-h-screen w-full items-center justify-center bg-transparent select-none overflow-hidden"
+      className="relative flex flex-col min-h-screen w-full items-center justify-center bg-transparent overflow-hidden"
     >
       <motion.main
         style={{ opacity, scale, y }}
