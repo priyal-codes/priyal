@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { profile } from "@/constant";
 import { useConsole } from "@/components/common/console-layout";
+import { PacManGame } from "./_components/PacManGame";
 
 export const HeroSection = () => {
   let consoleCtx: ReturnType<typeof useConsole> | null = null;
@@ -34,10 +35,8 @@ export const HeroSection = () => {
     >
       <motion.main
         style={{ opacity, scale, y }}
-        className="relative w-full min-h-[calc(100vh-104px)] flex flex-col items-center justify-between pt-12 pb-0 overflow-hidden"
+        className="relative w-full min-h-[calc(100vh-104px)] flex flex-col items-center justify-between pt-6 pb-0 overflow-hidden"
       >
-
-
         {/* ── Decorative Pixel Stars ── */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <div className="absolute top-[15%] left-[8%] text-retro-yellow text-2xl animate-pixel-float" style={{ animationDelay: "0s" }}>✦</div>
@@ -61,67 +60,93 @@ export const HeroSection = () => {
           </div>
         </div>
 
-        {/* ── Main Title Frame ── */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 flex flex-col items-center px-4 my-auto"
-        >
-          {/* Title border frame */}
-          <div className="retro-window-green px-8 sm:px-16 py-10 sm:py-14 relative scanlines text-center max-w-3xl">
-            <div className="relative z-10 flex flex-col items-center gap-4 sm:gap-6">
-              <motion.span
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="font-pixel text-retro-yellow text-xs sm:text-sm tracking-widest uppercase flex items-center justify-center gap-2"
-              >
-                <span className="inline-block w-2 h-2 rounded-full bg-retro-green animate-pulse" />
-                SYSTEM ONLINE — DEVELOPER CONSOLE
-              </motion.span>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="font-pixel text-white text-center text-3xl sm:text-5xl md:text-6xl tracking-wider leading-relaxed"
-              >
-                {profile.name.first.toUpperCase()}
-              </motion.h1>
-
-              {/* Action Button */}
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-                onClick={() => {
-                  if (consoleCtx) {
-                    consoleCtx.setActiveTab("about");
-                  } else {
-                    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className="mt-4 retro-btn border-retro-green text-retro-green bg-retro-green/10 hover:bg-retro-green/20 text-xs sm:text-sm px-6 py-3 animate-retro-blink"
-                style={{ animationDuration: "1.5s" }}
-              >
-                ▶ EXPLORE PORTFOLIO
-              </motion.button>
-            </div>
-          </div>
-
-          {/* Dynamic Rotating Name & Role below */}
+        {/* ── Main Content Grid: Left Title Card + Right Arcade Box ── */}
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 my-auto py-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          {/* Left Column: Developer Profile Card (6 cols) */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.0 }}
-            className="font-pixel text-xs sm:text-sm text-retro-pink mt-6 tracking-widest text-center flex items-center justify-center gap-2"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left"
           >
-            <span>{profile.name.full.toUpperCase()}</span>
-            <span>—</span>
-            <RotatingRoles />
+            <div className="retro-window-green p-6 sm:p-8 w-full relative scanlines">
+              <div className="relative z-10 flex flex-col items-center lg:items-start gap-4 sm:gap-5">
+                <motion.span
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="font-pixel text-retro-yellow text-xs sm:text-sm tracking-widest uppercase flex items-center gap-2"
+                >
+                  <span className="inline-block w-2.5 h-2.5 rounded-full bg-retro-green animate-pulse" />
+                  SYSTEM ONLINE — DEVELOPER CONSOLE
+                </motion.span>
+
+                <motion.h1
+                  initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-pixel text-white text-3xl sm:text-5xl lg:text-6xl tracking-wider leading-relaxed"
+                >
+                  {profile.name.first.toUpperCase()}
+                </motion.h1>
+
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                  className="font-pixel text-xs sm:text-sm text-retro-pink tracking-widest flex flex-wrap items-center justify-center lg:justify-start gap-2"
+                >
+                  <span>{profile.name.full.toUpperCase()}</span>
+                  <span>—</span>
+                  <RotatingRoles />
+                </motion.div>
+
+                {/* Action Button */}
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  onClick={() => {
+                    if (consoleCtx) {
+                      consoleCtx.setActiveTab("about");
+                    } else {
+                      document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                  className="mt-2 retro-btn border-retro-green text-retro-green bg-retro-green/10 hover:bg-retro-green/20 text-xs sm:text-sm px-6 py-3 animate-retro-blink"
+                  style={{ animationDuration: "1.5s" }}
+                >
+                  ▶ EXPLORE PORTFOLIO
+                </motion.button>
+              </div>
+            </div>
           </motion.div>
-        </motion.div>
+
+          {/* Right Column: Playable Pac-Man Arcade Cabinet (6 cols) */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 retro-window-blue flex flex-col justify-between overflow-hidden"
+          >
+            {/* Title Bar */}
+            <div className="retro-title-bar retro-title-bar-blue text-xs font-pixel py-2 px-4 flex items-center justify-between">
+              <span className="text-retro-yellow flex items-center gap-2">
+                🕹 PAC-MAN ARCADE CONSOLE
+              </span>
+              <span className="text-retro-cyan animate-pulse">● PLAYABLE</span>
+            </div>
+
+            {/* Playable Game Container */}
+            <div className="p-3 sm:p-4 flex flex-col items-center justify-center bg-black/80 relative">
+              <PacManGame />
+              <div className="w-full flex items-center justify-between pt-2.5 border-t border-retro-blue/30 mt-2.5 font-pixel text-[10px] text-retro-cyan">
+                <span>[CONTROLS: ▲ ▼ ◄ ► / WASD]</span>
+                <span>RETRO ARCADE v6</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
 
         {/* ── Retro Pixel Ground with Traveling Pac-Man & Ghosts ── */}
         <motion.div

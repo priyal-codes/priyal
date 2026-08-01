@@ -403,7 +403,7 @@ export function PacManGame() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 m-auto opacity-25 pointer-events-none"
+      className="w-full h-auto max-h-[360px] sm:max-h-[400px] object-contain rounded bg-black/90 border border-retro-yellow/30 shadow-inner"
       style={{
         imageRendering: "pixelated",
       }}
