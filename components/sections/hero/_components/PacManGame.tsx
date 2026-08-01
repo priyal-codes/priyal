@@ -45,7 +45,7 @@ const MAZE: number[][] = [
 ];
 
 type Dir = { x: number; y: number };
-type Phase = "idle" | "playing" | "game_over" | "win";
+type Phase = "demo" | "playing" | "game_over" | "win";
 
 interface Entity { x: number; y: number; dir: Dir; }
 interface PacState extends Entity { nextDir: Dir; mouth: number; mouthDir: 1 | -1; }
@@ -173,6 +173,25 @@ function chooseGhostDir(g: GhostState, pac: PacState, map: number[][], idx: numb
   });
 }
 
+// Simple AI direction selector for Pac-Man in DEMO / AUTO mode
+function choosePacDemoDir(p: PacState, map: number[][]): Dir {
+  const possible = DIRS.filter(d => !(d.x === -p.dir.x && d.y === -p.dir.y) && canGo(map, p.x, p.y, d, PAC_SPEED));
+  if (possible.length === 0) {
+    const anyOpts = DIRS.filter(d => canGo(map, p.x, p.y, d, PAC_SPEED));
+    return anyOpts.length > 0 ? anyOpts[Math.floor(Math.random() * anyOpts.length)] : p.dir;
+  }
+  const withDot = possible.filter(d => {
+    const tc = colOf(p.x + d.x * CELL);
+    const tr = rowOf(p.y + d.y * CELL);
+    const tile = tileAt(map, tc, tr);
+    return tile === 0 || tile === 7;
+  });
+  if (withDot.length > 0 && Math.random() > 0.2) {
+    return withDot[Math.floor(Math.random() * withDot.length)];
+  }
+  return possible[Math.floor(Math.random() * possible.length)];
+}
+
 function drawScene(
   ctx: CanvasRenderingContext2D,
   map: number[][],
@@ -290,7 +309,7 @@ export function PacManGame() {
   const rafRef = useRef<number>(0);
   const lastRef = useRef<number>(0);
 
-  const [phase, setPhase] = useState<Phase>("idle");
+  const [phase, setPhase] = useState<Phase>("demo");
   const [score, setScore] = useState<number>(0);
   const [activeKey, setActiveKey] = useState<number | null>(null);
 
@@ -302,7 +321,7 @@ export function PacManGame() {
     total: countPellets(MAZE),
     tick: 0,
     score: 0,
-    phase: "idle" as Phase,
+    phase: "demo" as Phase,
   });
 
   const startGame = useCallback(() => {
@@ -321,8 +340,15 @@ export function PacManGame() {
 
   const endGame = useCallback(() => {
     const g = G.current;
-    g.phase = "idle";
-    setPhase("idle");
+    g.map = MAZE.map(r => [...r]);
+    g.pac = makePac();
+    g.ghosts = makeGhosts();
+    g.eaten = 0;
+    g.total = countPellets(MAZE);
+    g.score = 0;
+    g.phase = "demo";
+    setPhase("demo");
+    setScore(0);
   }, []);
 
   const queueDir = useCallback((d: Dir, num: number) => {
@@ -378,9 +404,95 @@ export function PacManGame() {
       const g = G.current;
       g.tick++;
 
-      // ── IDLE Phase ──
-      if (g.phase === "idle") {
-        drawScene(ctx, MAZE, makePac(), [], g.tick, "idle", 0);
+      const p = g.pac;
+
+      // ── DEMO MODE: Pac-Man moves automatically ──
+      if (g.phase === "demo") {
+        if (aligned(p.x) && aligned(p.y)) {
+          const demoDir = choosePacDemoDir(p, g.map);
+          p.dir = demoDir;
+        }
+
+        if (canGo(g.map, p.x, p.y, p.dir, PAC_SPEED)) {
+          p.x += p.dir.x * PAC_SPEED;
+          p.y += p.dir.y * PAC_SPEED;
+          p.x = wrapPx(p.x);
+        } else {
+          p.x = snap(p.x);
+          p.y = snap(p.y);
+          p.dir = choosePacDemoDir(p, g.map);
+        }
+
+        // Mouth animation
+        p.mouth += p.mouthDir * 4;
+        if (p.mouth >= 42) p.mouthDir = -1;
+        if (p.mouth <= 2)  p.mouthDir = 1;
+
+        // Eat pellets in demo mode
+        const pc = colOf(p.x), pr = rowOf(p.y);
+        if (pc >= 0 && pc < COLS && pr >= 0 && pr < ROWS) {
+          const tv = g.map[pr][pc];
+          if (tv === 0) {
+            g.map[pr][pc] = 2; g.score += 10; g.eaten++;
+            setScore(g.score);
+          } else if (tv === 7) {
+            g.map[pr][pc] = 2; g.score += 50; g.eaten++;
+            setScore(g.score);
+            g.ghosts.forEach(gh => { gh.fright = FRIGHT_DUR; });
+          }
+        }
+
+        if (g.eaten >= g.total) {
+          g.map = MAZE.map(r => [...r]);
+          g.eaten = 0;
+        }
+
+        // Update Ghosts in demo mode
+        g.ghosts.forEach((gh, idx) => {
+          if (gh.home) {
+            gh.homeTimer--;
+            if (gh.homeTimer <= 0) {
+              gh.home = false;
+              gh.x = tileCX(GHOST_HOME_COL); gh.y = tileCY(GHOST_HOME_ROW);
+              gh.dir = { x: 0, y: -1 };
+            }
+            return;
+          }
+
+          if (gh.fright > 0) gh.fright--;
+          const spd = gh.fright > 0 ? FRIGHT_SPD : GHOST_SPEED;
+
+          if (aligned(gh.x) && aligned(gh.y)) {
+            const newDir = chooseGhostDir(gh, p, g.map, idx);
+            if (newDir.x !== gh.dir.x || newDir.y !== gh.dir.y) {
+              gh.x = snap(gh.x); gh.y = snap(gh.y);
+            }
+            gh.dir = newDir;
+          }
+
+          if (canGo(g.map, gh.x, gh.y, gh.dir, spd)) {
+            gh.x += gh.dir.x * spd; gh.y += gh.dir.y * spd; gh.x = wrapPx(gh.x);
+          } else {
+            gh.x = snap(gh.x); gh.y = snap(gh.y);
+            const opts = DIRS.filter(d =>
+              !(d.x === -gh.dir.x && d.y === -gh.dir.y) &&
+              canGo(g.map, gh.x, gh.y, d, spd)
+            );
+            if (opts.length) gh.dir = opts[Math.floor(Math.random() * opts.length)];
+          }
+
+          // Ghost collision in demo mode: reset Pac-Man & ghosts
+          if (Math.hypot(gh.x - p.x, gh.y - p.y) < CELL * 0.75) {
+            if (gh.fright > 0) {
+              gh.fright = 0;
+              gh.x = tileCX(GHOST_HOME_COL); gh.y = tileCY(GHOST_HOME_ROW);
+            } else {
+              g.pac = makePac();
+            }
+          }
+        });
+
+        drawScene(ctx, g.map, g.pac, g.ghosts, g.tick, "demo", g.score);
         return;
       }
 
@@ -396,8 +508,7 @@ export function PacManGame() {
         return;
       }
 
-      // ── PLAYING Phase ──
-      const p = g.pac;
+      // ── PLAYING Phase: User in control ──
       const nd = p.nextDir;
 
       // Turn Pac-Man when aligned to grid tile center
@@ -504,7 +615,7 @@ export function PacManGame() {
 
   return (
     <div className="w-full flex flex-col items-center gap-3">
-      {/* Game Canvas Container with Overlays */}
+      {/* Game Canvas Container with Non-Blocking Demo Banner / Overlays */}
       <div className="relative w-full overflow-hidden rounded border border-retro-yellow/30 bg-black/90 shadow-inner flex justify-center items-center">
         <canvas
           ref={canvasRef}
@@ -515,21 +626,13 @@ export function PacManGame() {
           style={{ imageRendering: "pixelated" }}
         />
 
-        {/* Start Overlay */}
-        {phase === "idle" && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/75 backdrop-blur-xs p-4">
-            <p className="font-pixel text-retro-yellow text-sm tracking-widest animate-pulse">
-              PAC-MAN ARCADE
-            </p>
-            <button
-              onClick={startGame}
-              className="font-pixel text-xs px-5 py-2.5 bg-retro-yellow hover:bg-yellow-300 text-black rounded font-bold transition-all shadow-[0_0_12px_rgba(255,225,53,0.5)] active:scale-95 cursor-pointer"
-            >
-              ▶ START GAME
-            </button>
-            <p className="font-pixel text-retro-cyan/70 text-[9px] tracking-wider text-center">
-              USE WASD / ARROW KEYS OR ON-SCREEN D-PAD
-            </p>
+        {/* Demo Mode Subtle Banner */}
+        {phase === "demo" && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/80 border border-retro-yellow/60 rounded px-3 py-1.5 pointer-events-none shadow-[0_0_10px_rgba(255,225,53,0.3)] flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-retro-green animate-ping" />
+            <span className="font-pixel text-retro-yellow text-[10px] tracking-wider uppercase">
+              PRESS START OR USE ARROW KEYS TO PLAY
+            </span>
           </div>
         )}
 
@@ -574,17 +677,21 @@ export function PacManGame() {
             {/* START Button */}
             <button
               onClick={startGame}
-              className="px-3 py-1.5 bg-retro-green/20 hover:bg-retro-green/30 text-retro-green border border-retro-green/60 rounded text-[11px] font-bold tracking-wider transition-all active:scale-95 cursor-pointer flex items-center gap-1.5 shadow-[0_0_8px_rgba(57,255,20,0.2)]"
+              className={`px-3 py-1.5 rounded text-[11px] font-bold tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                phase === "playing"
+                  ? "bg-retro-green text-black border border-retro-green shadow-[0_0_12px_rgba(57,255,20,0.6)] animate-pulse"
+                  : "bg-retro-green/20 hover:bg-retro-green/30 text-retro-green border border-retro-green/60 active:scale-95 shadow-[0_0_8px_rgba(57,255,20,0.2)]"
+              }`}
             >
-              <span>▶</span> START
+              <span>▶</span> {phase === "playing" ? "PLAYING" : "START"}
             </button>
 
             {/* END Button */}
             <button
               onClick={endGame}
-              disabled={phase === "idle"}
+              disabled={phase === "demo"}
               className={`px-3 py-1.5 border rounded text-[11px] font-bold tracking-wider transition-all flex items-center gap-1.5 ${
-                phase === "idle"
+                phase === "demo"
                   ? "bg-neutral-800/40 text-neutral-500 border-neutral-700/50 cursor-not-allowed opacity-50"
                   : "bg-retro-pink/20 hover:bg-retro-pink/30 text-retro-pink border-retro-pink/60 active:scale-95 cursor-pointer shadow-[0_0_8px_rgba(255,105,180,0.2)]"
               }`}
