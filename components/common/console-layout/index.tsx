@@ -90,7 +90,7 @@ export function ConsoleLayout() {
         {/* ── Tab Bar ── */}
         <div className="sticky top-[52px] sm:top-[56px] z-40 bg-black/95 backdrop-blur-md border-b-2 border-retro-green/30">
           <div className="max-w-7xl mx-auto px-2 sm:px-4">
-            <div className="flex items-center overflow-x-auto scrollbar-hide gap-0.5 sm:gap-1 py-1.5">
+            <div className="flex items-center justify-center overflow-x-auto scrollbar-hide gap-1 sm:gap-3 py-1.5">
               {TABS.map((tab) => {
                 const isActive = activeTab === tab.id;
                 return (
@@ -107,9 +107,6 @@ export function ConsoleLayout() {
                       }
                     `}
                   >
-                    <span className="hidden sm:inline text-[9px] text-retro-yellow/60 mr-1.5">
-                      {tab.shortcut}
-                    </span>
                     {tab.label}
                     {isActive && (
                       <motion.div
