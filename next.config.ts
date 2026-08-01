@@ -78,7 +78,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/email",
-        destination: "mailto:priyaldotcodes@gmail.com",
+        destination: "mailto:priyalramteke008@gmail.com",
         permanent: true,
       },
       {
