@@ -27,7 +27,7 @@ const githubSocial = socials.find((s) => s.name === "GitHub");
 
 export const SITE_SEO = {
   siteName: "Priyal Ramteke",
-  siteTitle: "Priyal Ramteke - Full-Stack Software Developer",
+  siteTitle: "Priyal Ramteke - Software Developer",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://priyal.vercel.app",
   titleTemplate: "%s | Priyal Ramteke",
   defaultDescription:
@@ -75,7 +75,7 @@ export const PAGE_SEO: Record<
   PageSeoConfig
 > = {
   home: {
-    title: "Priyal Ramteke - Full-Stack Software Developer",
+    title: "Priyal Ramteke - Software Developer",
     description:
       "Welcome to the official portfolio of Priyal Ramteke. Discover full-stack web applications, real-time communication systems, technical projects, and experience.",
     keywords: [
